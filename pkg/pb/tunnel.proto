@@ -2,25 +2,46 @@ syntax = "proto3";
 
 package tunnel;
 
-import "google/protobuf/any.proto";
-
 option go_package = "github.com/chinmayb/gotunnel/pkg/pb/;pb";
 
 
 
 message Send {
     string id = 1;
-    google.protobuf.Any data = 3;
+    bytes data = 3;
 }
 
 message Receive {
     string id = 1;
-    google.protobuf.Any data = 3;
+    bytes data = 3;
 }
 
+message Headers {
+    repeated string headers = 1;
+}
+
+message HTTPRequest {
+    string id = 1;
+    string url = 2;
+    string method = 3;
+    map<string, Headers> headers = 4;
+    bytes body = 5;
+}
+
+message HTTPResponse {
+    string id = 1;
+    int32 status_code = 2;
+    map<string, string> headers = 3;
+    bytes result = 4;
+}
 
 // Bidirectional streaming RPC
 service Tunnel {
-    rpc Connect(stream Send) returns (stream Receive) {}
-}
+    // pipe
+    rpc Flow(stream Receive) returns (stream Send) {
+    }
 
+    // faces http proxy
+    rpc Push(HTTPRequest) returns (stream HTTPResponse) {
+    }
+}

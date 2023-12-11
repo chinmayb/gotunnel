@@ -7,7 +7,6 @@ import (
 	context "context"
 	fmt "fmt"
 	proto "github.com/golang/protobuf/proto"
-	any "github.com/golang/protobuf/ptypes/any"
 	grpc "google.golang.org/grpc"
 	math "math"
 )
@@ -25,7 +24,7 @@ const _ = proto.ProtoPackageIsVersion3 // please upgrade the proto package
 
 type Send struct {
 	Id                   string   `protobuf:"bytes,1,opt,name=id,proto3" json:"id,omitempty"`
-	Data                 *any.Any `protobuf:"bytes,3,opt,name=data,proto3" json:"data,omitempty"`
+	Data                 []byte   `protobuf:"bytes,3,opt,name=data,proto3" json:"data,omitempty"`
 	XXX_NoUnkeyedLiteral struct{} `json:"-"`
 	XXX_unrecognized     []byte   `json:"-"`
 	XXX_sizecache        int32    `json:"-"`
@@ -63,7 +62,7 @@ func (m *Send) GetId() string {
 	return ""
 }
 
-func (m *Send) GetData() *any.Any {
+func (m *Send) GetData() []byte {
 	if m != nil {
 		return m.Data
 	}
@@ -72,7 +71,7 @@ func (m *Send) GetData() *any.Any {
 
 type Receive struct {
 	Id                   string   `protobuf:"bytes,1,opt,name=id,proto3" json:"id,omitempty"`
-	Data                 *any.Any `protobuf:"bytes,3,opt,name=data,proto3" json:"data,omitempty"`
+	Data                 []byte   `protobuf:"bytes,3,opt,name=data,proto3" json:"data,omitempty"`
 	XXX_NoUnkeyedLiteral struct{} `json:"-"`
 	XXX_unrecognized     []byte   `json:"-"`
 	XXX_sizecache        int32    `json:"-"`
@@ -110,9 +109,182 @@ func (m *Receive) GetId() string {
 	return ""
 }
 
-func (m *Receive) GetData() *any.Any {
+func (m *Receive) GetData() []byte {
 	if m != nil {
 		return m.Data
+	}
+	return nil
+}
+
+type Headers struct {
+	Headers              []string `protobuf:"bytes,1,rep,name=headers,proto3" json:"headers,omitempty"`
+	XXX_NoUnkeyedLiteral struct{} `json:"-"`
+	XXX_unrecognized     []byte   `json:"-"`
+	XXX_sizecache        int32    `json:"-"`
+}
+
+func (m *Headers) Reset()         { *m = Headers{} }
+func (m *Headers) String() string { return proto.CompactTextString(m) }
+func (*Headers) ProtoMessage()    {}
+func (*Headers) Descriptor() ([]byte, []int) {
+	return fileDescriptor_145acff6afb9d2ae, []int{2}
+}
+
+func (m *Headers) XXX_Unmarshal(b []byte) error {
+	return xxx_messageInfo_Headers.Unmarshal(m, b)
+}
+func (m *Headers) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
+	return xxx_messageInfo_Headers.Marshal(b, m, deterministic)
+}
+func (m *Headers) XXX_Merge(src proto.Message) {
+	xxx_messageInfo_Headers.Merge(m, src)
+}
+func (m *Headers) XXX_Size() int {
+	return xxx_messageInfo_Headers.Size(m)
+}
+func (m *Headers) XXX_DiscardUnknown() {
+	xxx_messageInfo_Headers.DiscardUnknown(m)
+}
+
+var xxx_messageInfo_Headers proto.InternalMessageInfo
+
+func (m *Headers) GetHeaders() []string {
+	if m != nil {
+		return m.Headers
+	}
+	return nil
+}
+
+type HTTPRequest struct {
+	Id                   string              `protobuf:"bytes,1,opt,name=id,proto3" json:"id,omitempty"`
+	Url                  string              `protobuf:"bytes,2,opt,name=url,proto3" json:"url,omitempty"`
+	Method               string              `protobuf:"bytes,3,opt,name=method,proto3" json:"method,omitempty"`
+	Headers              map[string]*Headers `protobuf:"bytes,4,rep,name=headers,proto3" json:"headers,omitempty" protobuf_key:"bytes,1,opt,name=key,proto3" protobuf_val:"bytes,2,opt,name=value,proto3"`
+	Body                 []byte              `protobuf:"bytes,5,opt,name=body,proto3" json:"body,omitempty"`
+	XXX_NoUnkeyedLiteral struct{}            `json:"-"`
+	XXX_unrecognized     []byte              `json:"-"`
+	XXX_sizecache        int32               `json:"-"`
+}
+
+func (m *HTTPRequest) Reset()         { *m = HTTPRequest{} }
+func (m *HTTPRequest) String() string { return proto.CompactTextString(m) }
+func (*HTTPRequest) ProtoMessage()    {}
+func (*HTTPRequest) Descriptor() ([]byte, []int) {
+	return fileDescriptor_145acff6afb9d2ae, []int{3}
+}
+
+func (m *HTTPRequest) XXX_Unmarshal(b []byte) error {
+	return xxx_messageInfo_HTTPRequest.Unmarshal(m, b)
+}
+func (m *HTTPRequest) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
+	return xxx_messageInfo_HTTPRequest.Marshal(b, m, deterministic)
+}
+func (m *HTTPRequest) XXX_Merge(src proto.Message) {
+	xxx_messageInfo_HTTPRequest.Merge(m, src)
+}
+func (m *HTTPRequest) XXX_Size() int {
+	return xxx_messageInfo_HTTPRequest.Size(m)
+}
+func (m *HTTPRequest) XXX_DiscardUnknown() {
+	xxx_messageInfo_HTTPRequest.DiscardUnknown(m)
+}
+
+var xxx_messageInfo_HTTPRequest proto.InternalMessageInfo
+
+func (m *HTTPRequest) GetId() string {
+	if m != nil {
+		return m.Id
+	}
+	return ""
+}
+
+func (m *HTTPRequest) GetUrl() string {
+	if m != nil {
+		return m.Url
+	}
+	return ""
+}
+
+func (m *HTTPRequest) GetMethod() string {
+	if m != nil {
+		return m.Method
+	}
+	return ""
+}
+
+func (m *HTTPRequest) GetHeaders() map[string]*Headers {
+	if m != nil {
+		return m.Headers
+	}
+	return nil
+}
+
+func (m *HTTPRequest) GetBody() []byte {
+	if m != nil {
+		return m.Body
+	}
+	return nil
+}
+
+type HTTPResponse struct {
+	Id                   string            `protobuf:"bytes,1,opt,name=id,proto3" json:"id,omitempty"`
+	StatusCode           int32             `protobuf:"varint,2,opt,name=status_code,json=statusCode,proto3" json:"status_code,omitempty"`
+	Headers              map[string]string `protobuf:"bytes,3,rep,name=headers,proto3" json:"headers,omitempty" protobuf_key:"bytes,1,opt,name=key,proto3" protobuf_val:"bytes,2,opt,name=value,proto3"`
+	Result               []byte            `protobuf:"bytes,4,opt,name=result,proto3" json:"result,omitempty"`
+	XXX_NoUnkeyedLiteral struct{}          `json:"-"`
+	XXX_unrecognized     []byte            `json:"-"`
+	XXX_sizecache        int32             `json:"-"`
+}
+
+func (m *HTTPResponse) Reset()         { *m = HTTPResponse{} }
+func (m *HTTPResponse) String() string { return proto.CompactTextString(m) }
+func (*HTTPResponse) ProtoMessage()    {}
+func (*HTTPResponse) Descriptor() ([]byte, []int) {
+	return fileDescriptor_145acff6afb9d2ae, []int{4}
+}
+
+func (m *HTTPResponse) XXX_Unmarshal(b []byte) error {
+	return xxx_messageInfo_HTTPResponse.Unmarshal(m, b)
+}
+func (m *HTTPResponse) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
+	return xxx_messageInfo_HTTPResponse.Marshal(b, m, deterministic)
+}
+func (m *HTTPResponse) XXX_Merge(src proto.Message) {
+	xxx_messageInfo_HTTPResponse.Merge(m, src)
+}
+func (m *HTTPResponse) XXX_Size() int {
+	return xxx_messageInfo_HTTPResponse.Size(m)
+}
+func (m *HTTPResponse) XXX_DiscardUnknown() {
+	xxx_messageInfo_HTTPResponse.DiscardUnknown(m)
+}
+
+var xxx_messageInfo_HTTPResponse proto.InternalMessageInfo
+
+func (m *HTTPResponse) GetId() string {
+	if m != nil {
+		return m.Id
+	}
+	return ""
+}
+
+func (m *HTTPResponse) GetStatusCode() int32 {
+	if m != nil {
+		return m.StatusCode
+	}
+	return 0
+}
+
+func (m *HTTPResponse) GetHeaders() map[string]string {
+	if m != nil {
+		return m.Headers
+	}
+	return nil
+}
+
+func (m *HTTPResponse) GetResult() []byte {
+	if m != nil {
+		return m.Result
 	}
 	return nil
 }
@@ -120,6 +292,11 @@ func (m *Receive) GetData() *any.Any {
 func init() {
 	proto.RegisterType((*Send)(nil), "tunnel.Send")
 	proto.RegisterType((*Receive)(nil), "tunnel.Receive")
+	proto.RegisterType((*Headers)(nil), "tunnel.Headers")
+	proto.RegisterType((*HTTPRequest)(nil), "tunnel.HTTPRequest")
+	proto.RegisterMapType((map[string]*Headers)(nil), "tunnel.HTTPRequest.HeadersEntry")
+	proto.RegisterType((*HTTPResponse)(nil), "tunnel.HTTPResponse")
+	proto.RegisterMapType((map[string]string)(nil), "tunnel.HTTPResponse.HeadersEntry")
 }
 
 func init() {
@@ -127,21 +304,33 @@ func init() {
 }
 
 var fileDescriptor_145acff6afb9d2ae = []byte{
-	// 212 bytes of a gzipped FileDescriptorProto
-	0x1f, 0x8b, 0x08, 0x00, 0x00, 0x00, 0x00, 0x00, 0x02, 0xff, 0x9c, 0x90, 0x3d, 0x4b, 0xc5, 0x30,
-	0x18, 0x85, 0xcd, 0xf5, 0xd2, 0x8b, 0x51, 0x14, 0x82, 0xc3, 0xb5, 0x53, 0xe9, 0x62, 0x5c, 0x92,
-	0x52, 0x17, 0xc1, 0x45, 0xed, 0x3f, 0xa8, 0x4e, 0x6e, 0xf9, 0x32, 0x0d, 0xb6, 0x6f, 0x82, 0xa4,
-	0x42, 0xff, 0xbd, 0x98, 0xb4, 0xbb, 0x38, 0x3e, 0xe1, 0xf0, 0x9c, 0x93, 0x17, 0x37, 0xd6, 0xc5,
-	0x61, 0x96, 0x4c, 0xf9, 0x89, 0xab, 0xc1, 0xc1, 0x24, 0x16, 0xc9, 0xad, 0x8f, 0x33, 0x80, 0x19,
-	0x79, 0xf8, 0xb4, 0x3c, 0x48, 0x9e, 0x89, 0x85, 0x2f, 0x1f, 0x3d, 0x29, 0x32, 0x95, 0x37, 0xd6,
-	0x7b, 0x3b, 0x1a, 0x9e, 0x5e, 0xe5, 0xfc, 0xc1, 0x05, 0x2c, 0x39, 0x52, 0x3f, 0xe1, 0xfd, 0xab,
-	0x01, 0x4d, 0x2e, 0xf1, 0xce, 0xe9, 0x23, 0xaa, 0x10, 0x3d, 0xeb, 0x77, 0x4e, 0x13, 0x8a, 0xf7,
-	0x5a, 0x44, 0x71, 0x3c, 0xad, 0x10, 0x3d, 0x6f, 0xaf, 0x59, 0x36, 0xb0, 0xcd, 0xc0, 0x9e, 0x61,
-	0xe9, 0x53, 0xa2, 0xee, 0xf0, 0xa1, 0x37, 0xca, 0xb8, 0x6f, 0xf3, 0x7f, 0x49, 0xfb, 0x80, 0x8b,
-	0xb7, 0xb4, 0x95, 0x30, 0x7c, 0xe8, 0x3c, 0x80, 0x51, 0x91, 0x5c, 0xb0, 0xf5, 0x37, 0xbf, 0x0b,
-	0xcb, 0xab, 0x8d, 0xd6, 0xb6, 0xfa, 0x84, 0xa2, 0x06, 0xbd, 0xdc, 0xbd, 0xdf, 0xfe, 0xe5, 0x2e,
-	0x8f, 0x41, 0xca, 0x22, 0x15, 0xdf, 0xff, 0x04, 0x00, 0x00, 0xff, 0xff, 0x5b, 0x4b, 0x6b, 0xb8,
-	0x49, 0x01, 0x00, 0x00,
+	// 409 bytes of a gzipped FileDescriptorProto
+	0x1f, 0x8b, 0x08, 0x00, 0x00, 0x00, 0x00, 0x00, 0x02, 0xff, 0x8c, 0x92, 0xd1, 0x8e, 0x94, 0x30,
+	0x14, 0x86, 0xb7, 0x03, 0xc3, 0x64, 0x0e, 0x44, 0x4d, 0xdd, 0x6c, 0x08, 0x37, 0x22, 0xc6, 0x88,
+	0x1a, 0x61, 0x32, 0xc6, 0xc4, 0xcc, 0xde, 0x69, 0x34, 0x9b, 0x78, 0xb3, 0xa9, 0x73, 0xe5, 0x8d,
+	0x01, 0xda, 0x0c, 0x64, 0x19, 0x8a, 0xb4, 0x5d, 0xc3, 0x5b, 0xfa, 0x10, 0x3e, 0x88, 0xa1, 0x65,
+	0x67, 0x31, 0xbb, 0xc6, 0xb9, 0xfb, 0xff, 0x43, 0x39, 0xe7, 0xff, 0xda, 0x03, 0xab, 0x5d, 0x25,
+	0x4b, 0x95, 0x27, 0x05, 0xdf, 0xa7, 0x45, 0x59, 0x35, 0xfb, 0xac, 0xcf, 0xd3, 0x1d, 0x97, 0xaa,
+	0x69, 0x58, 0x9d, 0xb6, 0x57, 0xbb, 0xb4, 0xcd, 0x53, 0xe3, 0x92, 0xb6, 0xe3, 0x92, 0x63, 0xc7,
+	0xb8, 0xe8, 0x15, 0xd8, 0x5f, 0x59, 0x43, 0xf1, 0x03, 0x98, 0x55, 0xd4, 0x47, 0x21, 0x8a, 0x97,
+	0x64, 0x56, 0x51, 0x8c, 0xc1, 0xa6, 0x99, 0xcc, 0x7c, 0x2b, 0x44, 0xb1, 0x47, 0xb4, 0x8e, 0xde,
+	0xc0, 0x82, 0xb0, 0x82, 0x55, 0xd7, 0xec, 0xa8, 0xe3, 0xcf, 0x60, 0x71, 0xc1, 0x32, 0xca, 0x3a,
+	0x81, 0x7d, 0x58, 0x94, 0x46, 0xfa, 0x28, 0xb4, 0xe2, 0x25, 0xb9, 0xb1, 0xd1, 0x6f, 0x04, 0xee,
+	0xc5, 0x76, 0x7b, 0x49, 0xd8, 0x0f, 0xc5, 0x84, 0xbc, 0xd3, 0xf8, 0x11, 0x58, 0xaa, 0xab, 0xfd,
+	0x99, 0x2e, 0x0c, 0x12, 0x9f, 0x81, 0xb3, 0x67, 0xb2, 0xe4, 0x54, 0x0f, 0x5b, 0x92, 0xd1, 0xe1,
+	0xcd, 0xed, 0x0c, 0x3b, 0xb4, 0x62, 0x77, 0x1d, 0x26, 0x23, 0xf1, 0xa4, 0x7f, 0x32, 0x26, 0xfa,
+	0xd4, 0xc8, 0xae, 0x3f, 0xa4, 0x18, 0xe2, 0xe7, 0x9c, 0xf6, 0xfe, 0xdc, 0xc4, 0x1f, 0x74, 0xf0,
+	0x05, 0xbc, 0xe9, 0xe1, 0x21, 0xc9, 0x15, 0xeb, 0xc7, 0x68, 0x83, 0xc4, 0xcf, 0x61, 0x7e, 0x9d,
+	0xd5, 0x8a, 0xe9, 0x74, 0xee, 0xfa, 0xe1, 0x61, 0x9e, 0xf9, 0x8d, 0x98, 0xaf, 0x9b, 0xd9, 0x7b,
+	0x14, 0xfd, 0x42, 0xe0, 0x99, 0x18, 0xa2, 0xe5, 0x8d, 0xb8, 0x7b, 0x81, 0x4f, 0xc0, 0x15, 0x32,
+	0x93, 0x4a, 0x7c, 0x2f, 0x38, 0x35, 0x1d, 0xe7, 0x04, 0x4c, 0xe9, 0x23, 0xa7, 0x0c, 0x9f, 0xdf,
+	0xe2, 0x59, 0x1a, 0xef, 0xe9, 0xdf, 0x78, 0xa6, 0xef, 0x3f, 0xf8, 0xce, 0xc0, 0xe9, 0x98, 0x50,
+	0xb5, 0xf4, 0x6d, 0x4d, 0x38, 0xba, 0x60, 0xf3, 0x5f, 0xc6, 0xd3, 0x29, 0xe3, 0x72, 0x82, 0xb4,
+	0xae, 0xc1, 0xd9, 0xea, 0x00, 0xf8, 0x35, 0xd8, 0x9f, 0x6b, 0xfe, 0x13, 0x1f, 0x2e, 0x60, 0xdc,
+	0x92, 0xc0, 0xbb, 0x29, 0x0c, 0x2b, 0x16, 0x9d, 0xc4, 0x68, 0x85, 0xf0, 0x3b, 0xb0, 0x2f, 0x95,
+	0x28, 0xf1, 0xe3, 0x7b, 0x5e, 0x27, 0x38, 0xbd, 0x8f, 0x29, 0x3a, 0x59, 0xa1, 0x0f, 0x2f, 0xbf,
+	0xbd, 0x38, 0x66, 0xc7, 0xcf, 0xdb, 0x3c, 0x77, 0xf4, 0x86, 0xbf, 0xfd, 0x13, 0x00, 0x00, 0xff,
+	0xff, 0x85, 0x26, 0xaa, 0x0c, 0x15, 0x03, 0x00, 0x00,
 }
 
 // Reference imports to suppress errors if they are not otherwise used.
@@ -156,7 +345,10 @@ const _ = grpc.SupportPackageIsVersion4
 //
 // For semantics around ctx use and closing/ending streaming RPCs, please refer to https://godoc.org/google.golang.org/grpc#ClientConn.NewStream.
 type TunnelClient interface {
-	Connect(ctx context.Context, opts ...grpc.CallOption) (Tunnel_ConnectClient, error)
+	// pipe
+	Flow(ctx context.Context, opts ...grpc.CallOption) (Tunnel_FlowClient, error)
+	// faces http proxy
+	Push(ctx context.Context, in *HTTPRequest, opts ...grpc.CallOption) (Tunnel_PushClient, error)
 }
 
 type tunnelClient struct {
@@ -167,31 +359,63 @@ func NewTunnelClient(cc *grpc.ClientConn) TunnelClient {
 	return &tunnelClient{cc}
 }
 
-func (c *tunnelClient) Connect(ctx context.Context, opts ...grpc.CallOption) (Tunnel_ConnectClient, error) {
-	stream, err := c.cc.NewStream(ctx, &_Tunnel_serviceDesc.Streams[0], "/tunnel.Tunnel/Connect", opts...)
+func (c *tunnelClient) Flow(ctx context.Context, opts ...grpc.CallOption) (Tunnel_FlowClient, error) {
+	stream, err := c.cc.NewStream(ctx, &_Tunnel_serviceDesc.Streams[0], "/tunnel.Tunnel/Flow", opts...)
 	if err != nil {
 		return nil, err
 	}
-	x := &tunnelConnectClient{stream}
+	x := &tunnelFlowClient{stream}
 	return x, nil
 }
 
-type Tunnel_ConnectClient interface {
-	Send(*Send) error
-	Recv() (*Receive, error)
+type Tunnel_FlowClient interface {
+	Send(*Receive) error
+	Recv() (*Send, error)
 	grpc.ClientStream
 }
 
-type tunnelConnectClient struct {
+type tunnelFlowClient struct {
 	grpc.ClientStream
 }
 
-func (x *tunnelConnectClient) Send(m *Send) error {
+func (x *tunnelFlowClient) Send(m *Receive) error {
 	return x.ClientStream.SendMsg(m)
 }
 
-func (x *tunnelConnectClient) Recv() (*Receive, error) {
-	m := new(Receive)
+func (x *tunnelFlowClient) Recv() (*Send, error) {
+	m := new(Send)
+	if err := x.ClientStream.RecvMsg(m); err != nil {
+		return nil, err
+	}
+	return m, nil
+}
+
+func (c *tunnelClient) Push(ctx context.Context, in *HTTPRequest, opts ...grpc.CallOption) (Tunnel_PushClient, error) {
+	stream, err := c.cc.NewStream(ctx, &_Tunnel_serviceDesc.Streams[1], "/tunnel.Tunnel/Push", opts...)
+	if err != nil {
+		return nil, err
+	}
+	x := &tunnelPushClient{stream}
+	if err := x.ClientStream.SendMsg(in); err != nil {
+		return nil, err
+	}
+	if err := x.ClientStream.CloseSend(); err != nil {
+		return nil, err
+	}
+	return x, nil
+}
+
+type Tunnel_PushClient interface {
+	Recv() (*HTTPResponse, error)
+	grpc.ClientStream
+}
+
+type tunnelPushClient struct {
+	grpc.ClientStream
+}
+
+func (x *tunnelPushClient) Recv() (*HTTPResponse, error) {
+	m := new(HTTPResponse)
 	if err := x.ClientStream.RecvMsg(m); err != nil {
 		return nil, err
 	}
@@ -200,37 +424,61 @@ func (x *tunnelConnectClient) Recv() (*Receive, error) {
 
 // TunnelServer is the server API for Tunnel service.
 type TunnelServer interface {
-	Connect(Tunnel_ConnectServer) error
+	// pipe
+	Flow(Tunnel_FlowServer) error
+	// faces http proxy
+	Push(*HTTPRequest, Tunnel_PushServer) error
 }
 
 func RegisterTunnelServer(s *grpc.Server, srv TunnelServer) {
 	s.RegisterService(&_Tunnel_serviceDesc, srv)
 }
 
-func _Tunnel_Connect_Handler(srv interface{}, stream grpc.ServerStream) error {
-	return srv.(TunnelServer).Connect(&tunnelConnectServer{stream})
+func _Tunnel_Flow_Handler(srv interface{}, stream grpc.ServerStream) error {
+	return srv.(TunnelServer).Flow(&tunnelFlowServer{stream})
 }
 
-type Tunnel_ConnectServer interface {
-	Send(*Receive) error
-	Recv() (*Send, error)
+type Tunnel_FlowServer interface {
+	Send(*Send) error
+	Recv() (*Receive, error)
 	grpc.ServerStream
 }
 
-type tunnelConnectServer struct {
+type tunnelFlowServer struct {
 	grpc.ServerStream
 }
 
-func (x *tunnelConnectServer) Send(m *Receive) error {
+func (x *tunnelFlowServer) Send(m *Send) error {
 	return x.ServerStream.SendMsg(m)
 }
 
-func (x *tunnelConnectServer) Recv() (*Send, error) {
-	m := new(Send)
+func (x *tunnelFlowServer) Recv() (*Receive, error) {
+	m := new(Receive)
 	if err := x.ServerStream.RecvMsg(m); err != nil {
 		return nil, err
 	}
 	return m, nil
+}
+
+func _Tunnel_Push_Handler(srv interface{}, stream grpc.ServerStream) error {
+	m := new(HTTPRequest)
+	if err := stream.RecvMsg(m); err != nil {
+		return err
+	}
+	return srv.(TunnelServer).Push(m, &tunnelPushServer{stream})
+}
+
+type Tunnel_PushServer interface {
+	Send(*HTTPResponse) error
+	grpc.ServerStream
+}
+
+type tunnelPushServer struct {
+	grpc.ServerStream
+}
+
+func (x *tunnelPushServer) Send(m *HTTPResponse) error {
+	return x.ServerStream.SendMsg(m)
 }
 
 var _Tunnel_serviceDesc = grpc.ServiceDesc{
@@ -239,10 +487,15 @@ var _Tunnel_serviceDesc = grpc.ServiceDesc{
 	Methods:     []grpc.MethodDesc{},
 	Streams: []grpc.StreamDesc{
 		{
-			StreamName:    "Connect",
-			Handler:       _Tunnel_Connect_Handler,
+			StreamName:    "Flow",
+			Handler:       _Tunnel_Flow_Handler,
 			ServerStreams: true,
 			ClientStreams: true,
+		},
+		{
+			StreamName:    "Push",
+			Handler:       _Tunnel_Push_Handler,
+			ServerStreams: true,
 		},
 	},
 	Metadata: "github.com/chinmayb/gotunnel/pkg/pb/tunnel.proto",
